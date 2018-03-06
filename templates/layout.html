@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="description" content="CBE Thermal Comfort tool to calculate thermal comfort according to ASHRAE Standard 55-2017, ASHRAE standard 55 thermal comfort tool, thermal comfort, PMV, PPD, SET, Adaptive comfort, Center for the Built Environment, CBE, UC Berkeley, Predicted Mean Vote, Predicted Percentage of Dissatisfied, Standard Equivalent Temperature, Ole Fanger, Richard de Dear, Gail Brager, Draft, Draught, Air Movement, Metabolic activity, Clothing Insulation, MET, CLO">
+    <meta charset="utf-8">
+    {% block head %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/layout.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery-ui.css') }}"/>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/lib/d3.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/lib/jquery-1.6.2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/lib/jquery-ui.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/util.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/comfortmodels.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/psychrometrics.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/erf.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/lib/underscore-min.js') }}"></script>
+    {% endblock %}
+
+  </head>
+<body>
+  <div id="header">
+    {% block header %}
+    <div id="banner">
+      Comfort API
+    </div>
+    {% endblock %}
+  </div>
+
+  {% block content %}{% endblock %}
+
+  <div id="footer">
+
+    {% block footer %}
+    {% endblock %}
+</body>
