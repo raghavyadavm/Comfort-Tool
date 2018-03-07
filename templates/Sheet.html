@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>SheetJS Test</title>
+</head>
+
+<body>
+	<input type="file" id="files" name="files" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.12.4/xlsx.full.min.js"></script>
+	<script type="text/javascript">
+		var rABS = true; // true: readAsBinaryString ; false: readAsArrayBuffer
+		function handleFile(e) {
+			var files = e.target.files,
+				f = files[0];
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				var data = e.target.result;
+				if (!rABS) data = new Uint8Array(data);
+				var workbook = XLSX.read(data, {
+					type: rABS ? 'binary' : 'array'
+				});
+				var sheets = workbook.SheetNames;
+				sheets.forEach(element => {
+					console.log(element);
+					let worksheet = workbook.Sheets[element];
+					console.log(worksheet);
+					let range = XLSX.utils.decode_range(worksheet['!ref']);
+					console.log(range);
+					for (var R = range.s.r; R <= range.e.r; ++R) {
+						for (var C = range.s.c; C <= range.e.c; ++C) {
+							var cellref = XLSX.utils.encode_cell({
+								c: C,
+								r: R
+							});
+							console.log(worksheet[cellref]);
+							console.log(worksheet[cellref].v);
+						}
+					}
+
+				});
+			};
+			if (rABS) reader.readAsBinaryString(f);
+			else reader.readAsArrayBuffer(f);
+		}
+
+		document.getElementById('files').addEventListener('change', handleFile, false);
+	</script>
+</body>
+
+</html>
