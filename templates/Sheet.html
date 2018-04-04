@@ -10,6 +10,16 @@
 	<input type="file" id="files" name="files" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.12.4/xlsx.full.min.js"></script>
 	<script type="text/javascript">
+		var d = {
+			ta: '',
+			tr: '',
+			vel: '',
+			rh: '',
+			met: '',
+			clo: '',
+			trm: '',
+			vel_a: ''
+		};
 		var rABS = true; // true: readAsBinaryString ; false: readAsArrayBuffer
 		function handleFile(e) {
 			var files = e.target.files,
@@ -21,24 +31,14 @@
 				var workbook = XLSX.read(data, {
 					type: rABS ? 'binary' : 'array'
 				});
-				var sheets = workbook.SheetNames;
-				sheets.forEach(element => {
-					console.log(element);
-					let worksheet = workbook.Sheets[element];
-					console.log(worksheet);
-					let range = XLSX.utils.decode_range(worksheet['!ref']);
-					console.log(range);
-					for (var R = range.s.r; R <= range.e.r; ++R) {
-						for (var C = range.s.c; C <= range.e.c; ++C) {
-							var cellref = XLSX.utils.encode_cell({
-								c: C,
-								r: R
-							});
-							console.log(worksheet[cellref]);
-							console.log(worksheet[cellref].v);
-						}
-					}
-
+				let worksheet = workbook.Sheets["Sheet1"];
+				console.log(worksheet);
+				var XL_row_object = XLSX.utils.sheet_to_row_object_array(worksheet);
+				console.log(XL_row_object);
+				XL_row_object.forEach(function(element) {
+					console.log('element value is ', element);
+					d = element;
+					console.log('d value is ', d);
 				});
 			};
 			if (rABS) reader.readAsBinaryString(f);

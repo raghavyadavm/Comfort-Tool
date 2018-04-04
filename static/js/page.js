@@ -19,6 +19,8 @@ var d_cache = {
     vel_a: ''
 };
 
+var XL_row_object;
+var range = 0;
 var complyCount = 0;
 var doesntcomplyCount = -1;
 var keys = ["ta", "tr", "vel", "rh", "met", "clo", "trm", "vel_a"];
@@ -603,9 +605,6 @@ function update() {
         d_cache[element] = d[element];
         console.log('element ', element,'d_cache[element] ', d_cache[element], 'd[element]', d[element]);
         document.getElementById(element).value = d[element];
-        // e = e.replace(/,/g, '.')
-        // d[element] = parseFloat(e);
-      //  console.log('d[element]', d[element]);
     });
 
     console.log('in middle update ', d);
@@ -850,78 +849,25 @@ function setDefaults() {
 }
 
 document.getElementById('updateButton').onclick = function() {
-
-
-  if(count == 0) {
-    d = {
-      ta: 25,
-      tr: 25,
-      vel: 0.15,
-      rh: 50,
-      met: 1,
-      clo: 0.5,
-      trm: 29,
-      vel_a: 0.6
-    };
-  } else if(count == 1) {
-    d = {
-      ta: 26,
-      tr: 25,
-      vel: 0.10,
-      rh: 50,
-      met: 1.1,
-      clo: 0.5,
-      trm: 29,
-      vel_a: 0.6
-    };
-  } else if(count == 2) {
-    d = {
-      ta: 27,
-      tr: 25,
-      vel: 0.10,
-      rh: 50,
-      met: 1.1,
-      clo: 0.5,
-      trm: 29,
-      vel_a: 0.6
-    };
-  } else if(count == 3) {
-    d = {
-      ta: 28,
-      tr: 22,
-      vel: 0.10,
-      rh: 50,
-      met: 1.1,
-      clo: 0.5,
-      trm: 29,
-      vel_a: 0.6
-    };
-  } else if(count == 4) {
-    d = {
-      ta: 29,
-      tr: 20,
-      vel: 0.10,
-      rh: 50,
-      met: 1.1,
-      clo: 0.5,
-      trm: 29,
-      vel_a: 0.6
-    };
-  } else {
-    d = {
-      ta: 20,
-      tr: 25,
-      vel: 0.10,
-      rh: 50,
-      met: 1,
-      clo: 0.5,
-      trm: 29,
-      vel_a: 0.6
-    };
+  if (count == 0 ){
+    complyCount = 0;
+    doesntcomplyCount = 0;
   }
 
+  if (count < range) {
+    d.ta = Number(XL_row_object[count].ta);
+    d.tr = Number(XL_row_object[count].tr);
+    d.vel = Number(XL_row_object[count].vel);
+    d.rh = Number(XL_row_object[count].rh);
+    d.met = Number(XL_row_object[count].met);
+    d.clo = Number(XL_row_object[count].clo);
+    d.trm = Number(XL_row_object[count].trm);
+    d.vel_a = Number(XL_row_object[count].vel_a);
+  } else {
+    window.alert('end of file');
+    return;
+  }
   count++;
-
   console.log("d for update is ",d);
   update();
   console.log('button is clicked');
@@ -931,76 +877,21 @@ document.getElementById('updateButton').onclick = function() {
 }
 
 document.getElementById('summaryButton').onclick = function() {
-  summarycount++;
   complyCount = 0;
   doesntcomplyCount = 0;
 
-    d = {
-      ta: 25,
-      tr: 25,
-      vel: 0.15,
-      rh: 50,
-      met: 1,
-      clo: 0.5,
-      trm: 29,
-      vel_a: 0.6
-    };
-    update();
-    d = {
-      ta: 26,
-      tr: 25,
-      vel: 0.10,
-      rh: 50,
-      met: 1.1,
-      clo: 0.5,
-      trm: 29,
-      vel_a: 0.6
-    };
-    update();
-    d = {
-      ta: 27,
-      tr: 25,
-      vel: 0.10,
-      rh: 50,
-      met: 1.1,
-      clo: 0.5,
-      trm: 29,
-      vel_a: 0.6
-    };
-    update();
-    d = {
-      ta: 28,
-      tr: 22,
-      vel: 0.10,
-      rh: 50,
-      met: 1.1,
-      clo: 0.5,
-      trm: 29,
-      vel_a: 0.6
-    };
-    update();
-    d = {
-      ta: 29,
-      tr: 20,
-      vel: 0.10,
-      rh: 50,
-      met: 1.1,
-      clo: 0.5,
-      trm: 29,
-      vel_a: 0.6
-    };
-    update();
-    d = {
-      ta: 20,
-      tr: 25,
-      vel: 0.10,
-      rh: 50,
-      met: 1,
-      clo: 0.5,
-      trm: 29,
-      vel_a: 0.6
-    };
-    update();
+    for (var i = 0; i < XL_row_object.length; i++) {
+      d.ta = Number(XL_row_object[i].ta);
+      d.tr = Number(XL_row_object[i].tr);
+      d.vel = Number(XL_row_object[i].vel);
+      d.rh = Number(XL_row_object[i].rh);
+      d.met = Number(XL_row_object[i].met);
+      d.clo = Number(XL_row_object[i].clo);
+      d.trm = Number(XL_row_object[i].trm);
+      d.vel_a = Number(XL_row_object[i].vel_a);
+      update();
+    }
+
 
     document.getElementById('complyResults').innerHTML = 'complyCount is: '+
       complyCount;
@@ -1054,38 +945,36 @@ function openDocument(doc) {
     return openwindow
 }
 
+var rABS = true;
 function handleFile(e) {
-  //Get the files from Upload control
-  var files = e.target.files;
-
-  var i, f;
-  //Loop through files
-  for (i = 0, f = files[i]; i != files.length; ++i) {
-    var reader = new FileReader();
-    var name = f.name;
-    reader.onload = function(e) {
-      var data = e.target.result;
-      var workbook = XLSX.read(data, {
-        type: 'binary'
-      });
-
-      var sheet_name_list = workbook.SheetNames;
-      sheet_name_list.forEach(function(y) { /* iterate through sheets */
-        //Convert the cell value to Json
-        var roa = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
-        if (roa.length > 0) {
-          result = roa;
-        }
-      });
-      //Get the first column first cell value
-      //alert(result[0].Column1);
-      console.log(result);
-    };
-    reader.readAsArrayBuffer(f);
-  }
+  console.log("worksheet");
+  count = 0;
+  var files = e.target.files,
+    f = files[0];
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var data = e.target.result;
+    if (!rABS) data = new Uint8Array(data);
+    var workbook = XLSX.read(data, {
+      type: rABS ? 'binary' : 'array'
+    });
+    let worksheet = workbook.Sheets["Sheet1"];
+    console.log(worksheet);
+    XL_row_object = XLSX.utils.sheet_to_row_object_array(worksheet);
+    console.log(XL_row_object);
+    console.log(XL_row_object.length);
+    range = XL_row_object.length;
+    // XL_row_object.forEach(function(element) {
+    //   console.log('element value is ', element);
+    //   d = element;
+    //   console.log('d value is ', d);
+    // });
+  };
+  if (rABS) reader.readAsBinaryString(f);
+  else reader.readAsArrayBuffer(f);
 }
 
-//Change event to dropdownlist
-$(document).ready(function() {
-  $('#files').change(handleFile);
-});
+// //Change event to dropdownlist
+// $(document).ready(function() {
+//   $('#files').change(handleFile);
+// });
